@@ -1,6 +1,6 @@
 import os
 import logging
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Body
 from typing import List, Optional
 
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +22,7 @@ def get_todos(day: str):
     return {"day": day, "tasks": todo_list[day]}
 
 @app.post("/todos/{day}")
-def add_todo(day: str, task: str = Query(...)):
+def add_todo(day: str, task: str = Body(..., embed=True)):
     day = day.lower()
     if day not in todo_list:
         raise HTTPException(status_code=400, detail="Дня недели не существует")
@@ -35,7 +35,7 @@ def add_todo(day: str, task: str = Query(...)):
 def delete_todo(day: str, task_id: int):
     day = day.lower()
     if day not in todo_list:
-        return {"error": "Дня недели не существует"}
+        raise HTTPException(status_code=400, detail="Дня недели не существует")
     try:
         removed_task = todo_list[day].pop(task_id)
         return {"day": day, "removed": removed_task, "status": "ok"}
