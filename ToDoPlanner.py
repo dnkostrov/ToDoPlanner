@@ -1,0 +1,40 @@
+import os
+import logging
+from fastapi import FastAPI, HTTPException
+from typing import List, Optional
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+app = FastAPI(title="Список дел на неделю", version="0.1.0")
+
+todo_list = {'monday': [], 'tuesday': [], 'wednesday': [], 'thursday': [], 'friday': [], 'saturday': [], 'sunday': []}
+
+@app.get("/")
+def root():
+        return {"message": "Сервис работает"}
+
+@app.get("/todos/{day}")
+def get_todos(day: str):
+    day = day.lower()
+    if day not in todo_list:
+        return {"error": "Дня недели не существует"}
+    return {"day": day, "tasks": todo_list[day]}
+
+@app.get("/version")def get_version():
+    return {"version": "0.1.0", "python": os.sys.version}
+
+@app.get("/health")
+def health():
+    logger.info("Health check requested")
+    return {"status": "ok"}
+
+@app.get("/info")
+def info():
+    week_number = os.getenv("WEEK_NUMBER", "Номер недели не указан")
+    app_user = os.getenv("APP_USER", "Пользователь не указан")
+
+    return {
+        "Номер недели": week_number,
+        "Пользователь": app_user,
+    }
