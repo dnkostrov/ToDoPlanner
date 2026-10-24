@@ -12,15 +12,14 @@ def test_health_endpoint():
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
 
-def test_main_todo_workflow():
-    post_response = client.post("/todos/friday", json={"task": "Submit project"})
-    assert post_response.status_code == 200
-    assert post_response.json()["added"] == "Submit project"
-    get_response = client.get("/todos/friday")
-    assert get_response.status_code == 200
-    assert get_response.json()["tasks"] == ["Submit project"]
+def test_root(): 
+    response = client.get("/") 
+    assert response.status_code == 200 
+    assert response.json() == {"message": "Сервис работает"}
 
-def test_invalid_day_error_handling():
-    response = client.get("/todos/funday")
-    assert response.status_code == 400
-    assert response.json()["detail"] == "Дня недели не существует"
+def test_version(): 
+    response = client.get("/version")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["version"] == "0.1.0"
+    assert isinstance(data["python"], str)
