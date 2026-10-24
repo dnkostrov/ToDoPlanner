@@ -21,6 +21,16 @@ def get_todos(day: str):
         return {"error": "Дня недели не существует"}
     return {"day": day, "tasks": todo_list[day]}
 
+@app.post("/todos/{day}")
+def add_todo(day: str, task: str):
+    day = day.lower()
+    if day not in todo_list:
+        return {"error": "Дня недели не существует"}
+    if not task.strip():
+        return {"error": "Текст задачи не может быть пустым"} 
+    todo_list[day].append(task)
+    return {"day": day, "added": task, "status": "ok"}
+
 @app.get("/version")def get_version():
     return {"version": "0.1.0", "python": os.sys.version}
 
