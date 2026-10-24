@@ -1,6 +1,6 @@
 import os
 import logging
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from typing import List, Optional
 
 logging.basicConfig(level=logging.INFO)
@@ -22,7 +22,7 @@ def get_todos(day: str):
     return {"day": day, "tasks": todo_list[day]}
 
 @app.post("/todos/{day}")
-def add_todo(day: str, task: str):
+def add_todo(day: str, task: str = Query(...)):
     day = day.lower()
     if day not in todo_list:
         return {"error": "Дня недели не существует"}
