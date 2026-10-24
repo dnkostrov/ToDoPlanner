@@ -18,14 +18,14 @@ def root():
 def get_todos(day: str):
     day = day.lower()
     if day not in todo_list:
-        return {"error": "Дня недели не существует"}
+        raise HTTPException(status_code=400, detail="Дня недели не существует")
     return {"day": day, "tasks": todo_list[day]}
 
 @app.post("/todos/{day}")
 def add_todo(day: str, task: str = Query(...)):
     day = day.lower()
     if day not in todo_list:
-        return {"error": "Дня недели не существует"}
+        raise HTTPException(status_code=400, detail="Дня недели не существует")
     if not task.strip():
         return {"error": "Текст задачи не может быть пустым"} 
     todo_list[day].append(task)

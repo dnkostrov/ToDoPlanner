@@ -22,5 +22,5 @@ def test_main_todo_workflow():
 
 def test_invalid_day_error_handling():
     response = client.get("/todos/funday")
-    assert response.status_code == 200
-    assert response.json()["error"] == "Дня недели не существует"
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Дня недели не существует"
