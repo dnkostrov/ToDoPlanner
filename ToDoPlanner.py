@@ -42,7 +42,8 @@ def delete_todo(day: str, task_id: int):
     except IndexError:
         return {"error": "Задачи с таким номером нет"}
 
-@app.get("/version")def get_version():
+@app.get("/version")
+def get_version():
     return {"version": "0.1.0", "python": os.sys.version}
 
 @app.get("/health")
