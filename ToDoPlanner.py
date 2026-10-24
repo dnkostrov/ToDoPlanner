@@ -31,6 +31,17 @@ def add_todo(day: str, task: str):
     todo_list[day].append(task)
     return {"day": day, "added": task, "status": "ok"}
 
+@app.delete("/todos/{day}/{task_id}")
+def delete_todo(day: str, task_id: int):
+    day = day.lower()
+    if day not in todo_list:
+        return {"error": "Дня недели не существует"}
+    try:
+        removed_task = todo_list[day].pop(task_id)
+        return {"day": day, "removed": removed_task, "status": "ok"}
+    except IndexError:
+        return {"error": "Задачи с таким номером нет"}
+
 @app.get("/version")def get_version():
     return {"version": "0.1.0", "python": os.sys.version}
 
