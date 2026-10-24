@@ -13,7 +13,7 @@ def test_health_endpoint():
     assert response.json() == {"status": "ok"}
 
 def test_main_todo_workflow():
-    post_response = client.post("/todos/friday", json={"task": "Сдать проект"})
+    post_response = client.post("/todos/friday", params={"task": "Сдать проект"})
     assert post_response.status_code == 200
     assert post_response.json()["added"] == "Сдать проект"
     get_response = client.get("/todos/friday")
