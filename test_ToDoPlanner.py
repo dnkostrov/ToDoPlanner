@@ -23,3 +23,8 @@ def test_version():
     data = response.json()
     assert data["version"] == "0.1.0"
     assert isinstance(data["python"], str)
+
+def test_add_todo_day_not_exist(client):
+    response = client.post("/todos/funday", json={"task": "Сдать проект"})
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Дня недели не существует"
