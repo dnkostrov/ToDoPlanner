@@ -35,3 +35,16 @@ jobs:
       with:
         name: pytest-results
         path: .pytest_cache
+
+    - name: Upload application source code
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: todo-planner-app
+        path: |
+          ToDoPlanner.py
+          test_ToDoPlanner.py
+          requirements.txt
+          requirements-dev.txt
+          .env.example
+          .gitignore
